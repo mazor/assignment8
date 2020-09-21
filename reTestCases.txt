@@ -1,0 +1,162 @@
+
+
+// some testing data
+
+/*
+matcher(("a" ~ "b") ~ "c", "abc")  // => true
+matcher(("a" ~ "b") ~ "c", "ab")   // => false
+
+// the supposedly 'evil' regular expression (a*)* b
+val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
+
+matcher(EVIL, "a" * 1000 ++ "b")   // => true
+matcher(EVIL, "a" * 1000)          // => false
+
+// size without simplifications
+size(der('a', der('a', EVIL)))             // => 28
+size(der('a', der('a', der('a', EVIL))))   // => 58
+
+// size with simplification
+size(simp(der('a', der('a', EVIL))))           // => 8
+size(simp(der('a', der('a', der('a', EVIL))))) // => 8
+
+// Java needs around 30 seconds for matching 28 a's with EVIL. 
+//
+// Lets see how long it takes to match strings with 
+// 0.5 Million a's...it should be in the range of some
+// seconds.
+
+def time_needed[T](i: Int, code: => T) = {
+  val start = System.nanoTime()
+  for (j <- 1 to i) code
+  val end = System.nanoTime()
+  (end - start)/(i * 1.0e9)
+}
+
+for (i <- 0 to 5000000 by 500000) {
+  println(i + " " + "%.5f".format(time_needed(2, matcher(EVIL, "a" * i))))
+}
+
+*/
+
+def main(args: Array[String]){
+//println("hello World");
+ println(nullable(ZERO) == false);
+ println( nullable(ONE) == true);
+  println(nullable(CHAR('a')) == false);
+  println(nullable(ZERO | ONE) == true);
+  println(nullable(ZERO | CHAR('a')) == false);
+ println( nullable(ONE ~  ONE) == true);
+ println( nullable(ONE ~ CHAR('a')) == false);
+  println(nullable(STAR(ZERO)) == true);
+ println( der('a', ZERO | ONE) == (ZERO | ZERO));
+ println(der('a', (CHAR('a') | ONE) ~ CHAR('a')) );
+  println(der('a', (CHAR('a') | ONE) ~ CHAR('a')) == ALT((ONE | ZERO) ~ CHAR('a'), ONE));
+ println( der('a', STAR(CHAR('a'))) == (ONE ~ STAR(CHAR('a'))));
+  println(der('b', STAR(CHAR('a'))) == (ZERO ~ STAR(CHAR('a'))));
+  
+  
+  /*
+  
+   println(simp(ZERO | ONE) == ONE);
+ println(simp(STAR(ZERO | ONE)) == STAR(ZERO | ONE));
+ println(simp(ONE ~ (ONE ~ (ONE ~ CHAR('a')))) == CHAR('a'));
+ println(simp(ONE ~ (ONE ~ (ONE ~ ZERO))) == ZERO);
+ println("super beep");
+  println(simp(ALT(ONE ~ (ONE ~ (ONE ~ ZERO)), CHAR('a')))); 
+ println(simp(ALT(ONE ~ (ONE ~ (ONE ~ ZERO)), CHAR('a'))) == CHAR('a'));
+ println(simp(CHAR('a') | CHAR('a')) == CHAR('a'));
+ */
+ /*
+ 
+  println("Simplifing:");
+ println(ONE | CHAR('a')) ;
+ println("is:");
+    println( simp(ONE | CHAR('a')));
+	println("Should be:");
+	println(ONE | CHAR('a'));
+	
+	
+	
+ println(simp(ONE | CHAR('a')) == (ONE | CHAR('a')));
+ 
+  println(simp(ONE | CHAR('a')) == (ONE | CHAR('a')));
+  
+  */
+  /*
+ val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'));
+ 
+ 
+ 
+ println("beep");
+ println(List.fill(5)('a'));
+ println(EVIL);
+  println("is:");
+    println(ders(List.fill(5)('a'),EVIL));
+	println("Should be:");
+	println(SEQ(SEQ(STAR(CHAR('a')),STAR(STAR(CHAR('a')))),CHAR('b')));
+ println(ders(List.fill(5)('a'),EVIL) == SEQ(SEQ(STAR(CHAR('a')),STAR(STAR(CHAR('a')))),CHAR('b')));
+ */
+/* println( ders(List('b'),EVIL) == ONE);
+ println( ders(List('b','b'),EVIL) == ZERO);
+  println(matcher(EVIL, "a" * 5 ++ "b") == true);
+  println(matcher(EVIL, "b") == true);
+ println( matcher(EVIL, "bb") == false);*/
+/* println( matcher("abc", "abc") == true);
+  println(matcher(("ab" | "a") ~ (ONE | "bc"), "abc") == true);
+ println( matcher(ONE, "") == true);
+  println(matcher(ZERO, "") == false);
+  println(matcher(ONE | CHAR('a'), "") == true);
+  println(matcher(ONE | CHAR('a'), "a") == true);
+ */
+ /*println("test data from comments");
+ println(matcher(("a" ~ "b") ~ "c", "abc"));  // => true
+println(matcher(("a" ~ "b") ~ "c", "ab"));   // => false
+val EVIL0 = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'));
+ println(size(der('a', der('a', EVIL0))) == 28);
+ println(size(der('a', der('a', der('a', EVIL0)))) == 58);
+ println(size(ders("aaaaaa".toList, EVIL0)));
+println(size(ders("aaaaaa".toList, EVIL0)) == 8);*/
+
+
+
+// the supposedly 'evil' regular expression (a*)* b
+val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
+ println(ders(List.fill(5)('a'),EVIL) == SEQ(SEQ(STAR(CHAR('a')),STAR(STAR(CHAR('a')))),CHAR('b')));
+  println(ders(List.fill(5)('a'),EVIL));
+ println(ders(List('b'),EVIL) == ONE);
+ println(ders(List('b','b'),EVIL) == ZERO);
+ println(matcher(EVIL, "a" * 5 ++ "b") == true);
+ println(matcher(EVIL, "b") == true);
+ println(matcher(EVIL, "bb") == false);
+ println(matcher("abc", "abc") == true);
+
+ println(matcher(ONE, "") == true);
+ println(matcher(ZERO, "") == false);
+println( matcher(ONE | CHAR('a'), "") == true);
+ println(matcher(ONE | CHAR('a'), "a") == true);
+ println(matcher(("a" ~ "b") ~ "c", "abc") ==true);
+  println(matcher(("a" ~ "b") ~ "c", "ab") ==false);
+  println(matcher(("ab" | "a") ~ (ONE | "bc"), "abc") == true);
+ }
+
+
+/*
+
+matcher(EVIL, "a" * 1000 ++ "b")   // => true
+matcher(EVIL, "a" * 1000)          // => false
+
+// size without simplifications
+size(der('a', der('a', EVIL)))             // => 28
+size(der('a', der('a', der('a', EVIL))))   // => 58
+
+// size with simplification
+size(simp(der('a', der('a', EVIL))))           // => 8
+size(simp(der('a', der('a', der('a', EVIL))))) // => 8
+*/
+
+
+
+
+
+}
